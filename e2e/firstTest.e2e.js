@@ -26,8 +26,4 @@ describe('Example CI Tests', () => {
     await element(by.id('Toggle_Button')).tap();
     await expect(element(by.id('Disappearing_Text'))).toBeVisible();
   });
-
-  it('should fail tests', async () => {
-    await element(by.id('NOT_EXISTING_ELEMENT')).tap();
-  });
 });
