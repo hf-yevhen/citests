@@ -30,7 +30,7 @@ const App = () => {
           </Pressable>
           <View style={styles.divider} />
 
-          {isShow && <Text testID="Disappearing_Text">This isn't hidden</Text>}
+          {isShow && <Text testID="Disappearing_Text">This isn't hidden!</Text>}
         </View>
       </ScrollView>
     </SafeAreaView>
