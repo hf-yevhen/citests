@@ -32,7 +32,6 @@ blocks:
             - cd ios
             - pod install
             - cd ..
-            - npx detox clean-framework-cache && npx detox build-framework-cache
             - npx detox build --configuration iosDebug
             - npx detox test --configuration iosDebug
             - artifact push workflow ios/build/Build/Products/Release-iphonesimulator/citests.app
