@@ -1,0 +1,45 @@
+version: v1.0
+name: Semaphore React Native iOS Example Pipeline
+agent:
+  machine:
+    type: a1-standard-4
+    os_image: macos-xcode12
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: yarn install and cache
+          commands:
+            - checkout
+            - cache restore
+            - yarn
+            - cache store
+  - name: Run tests
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: unit and integration tests
+          commands:
+            - cache restore
+            - yarn test
+        - name: e2e tests
+          commands:
+            - brew tap wix/brew
+            - brew install applesimutils
+            - cache restore
+            - cd ios
+            - pod install
+            - cd ..
+            - npx detox clean-framework-cache && npx detox build-framework-cache
+            - npx detox build --configuration iosDebug
+            - npx detox test --configuration iosDebug
+            - artifact push workflow ios/build/Build/Products/Release-iphonesimulator/citests.app
+promotions:
+  - name: Build app
+    pipeline_file: release-build-ios.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master
